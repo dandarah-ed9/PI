@@ -20,6 +20,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
+#include "usbd_cdc_if.h"
+#include <stdio.h>
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -108,8 +111,10 @@ int main(void)
   	  char valor_filtrado = 0;
   	  char mensagem = 0;
 
+
 	      for (int i = 0; i < NUM_LEITURAS; i++)
 	      {
+
 	          HAL_ADC_Start(&hadc1);
 
 	          HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
@@ -121,6 +126,7 @@ int main(void)
 	          soma += valor_adc;
 	      }
 	      	 valor_filtrado = soma / NUM_LEITURAS;
+
 
 	         sprintf(mensagem, "ADC: %u\r\n", valor_filtrado);
 
