@@ -123,14 +123,15 @@ int main(void)
 	          HAL_ADC_Stop(&hadc1);
 
 	          soma += valor_adc;
+
+	          valor_filtrado = soma / NUM_LEITURAS;
+
+	          sprintf(mensagem, "%u\r\n", valor_filtrado);
+
+	          CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
+
+	          HAL_Delay(1000);
 	      }
-	      	 valor_filtrado = soma / NUM_LEITURAS;
-
-
-	      	sprintf(mensagem, "%u\r\n", valor_filtrado);
-	         CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
-
-	         HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 
