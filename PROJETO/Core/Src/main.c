@@ -105,15 +105,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
 	  char soma = 0 ;
   	  char valor_adc;
   	  char NUM_LEITURAS = 10;
   	  char valor_filtrado = 0;
   	  char mensagem = 0;
 
+  	  	  HAL_Delay(10000);
 
 	      for (int i = 0; i < NUM_LEITURAS; i++)
 	      {
+
 
 	          HAL_ADC_Start(&hadc1);
 
@@ -128,8 +131,7 @@ int main(void)
 	      	 valor_filtrado = soma / NUM_LEITURAS;
 
 
-	         sprintf(mensagem, "ADC: %u\r\n", valor_filtrado);
-
+	      	sprintf(mensagem, "%u\r\n", valor_filtrado);
 	         CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
 
 	         HAL_Delay(1000);
