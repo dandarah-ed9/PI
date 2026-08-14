@@ -103,17 +103,16 @@ int main(void)
   while (1)
   {
 
-	  char soma = 0 ;
-  	  char valor_adc;
-  	  char NUM_LEITURAS = 10;
-  	  char valor_filtrado = 0;
-  	  char mensagem = 0;
+	  uint32_t soma = 0 ;
+	  uint16_t valor_adc;
+	  uint8_t NUM_LEITURAS = 10;
+	  uint16_t valor_filtrado = 0;
+  	  char mensagem [50];
 
-  	  	  HAL_Delay(10000);
+  	  	  HAL_Delay(1000);
 
 	      for (int i = 0; i < NUM_LEITURAS; i++)
 	      {
-
 
 	          HAL_ADC_Start(&hadc1);
 
