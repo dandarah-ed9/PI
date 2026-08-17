@@ -107,7 +107,7 @@ int main(void)
 	  uint16_t valor_adc;
 	  uint8_t NUM_LEITURAS = 10;
 	  uint16_t valor_filtrado = 0;
-  	  uint16_t mensagem[4];
+  	  uint16_t mensagem[6];
 
   	  	  HAL_Delay(1000);
 
@@ -133,7 +133,14 @@ int main(void)
 
 	          sprintf(mensagem, "@01|%04X#\r\n", valor_filtrado);
 
-	          CDC_Transmit_FS((uint8_t*)mensagem, strlen(mensagem));
+	          	  mensagem[0] = 0x40;                         // @
+	              mensagem[1] = 0x01;                         // ID
+	              mensagem[2] = 0x7C;                         // |
+	              mensagem[3] = valor_filtrado >> 8;          // byte alto
+	              mensagem[4] = valor_filtrado & 0xFF;        // byte baixo
+	              mensagem[5] = 0x23;                         // #
+
+	              CDC_Transmit_FS(mensagem, 6);
 
 	          HAL_Delay(1000);
 	      }
