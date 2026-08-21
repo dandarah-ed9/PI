@@ -102,48 +102,47 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+      uint32_t soma = 0;
+      uint16_t valor_adc;
+      uint16_t valor_filtrado;
+      uint8_t NUM_LEITURAS = 10;
+      uint8_t mensagem[6];
 
-	  uint32_t soma = 0 ;
-	  uint16_t valor_adc;
-	  uint8_t NUM_LEITURAS = 10;
-	  uint16_t valor_filtrado = 0;
-  	  uint8_t mensagem[6];
+      for (int i = 0; i < NUM_LEITURAS; i++)
+      {
+          HAL_ADC_Start(&hadc1);
 
-  	  	  HAL_Delay(1000);
+          HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 
-	      for (int i = 0; i < NUM_LEITURAS; i++)
-	      {
+          valor_adc = HAL_ADC_GetValue(&hadc1);
 
-	          HAL_ADC_Start(&hadc1);
+          HAL_ADC_Stop(&hadc1);
 
-	          HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+          soma += valor_adc;
 
-	          valor_adc = HAL_ADC_GetValue(&hadc1);
+          HAL_Delay(1000);
+      }
 
-	         HAL_ADC_Stop(&hadc1);
+      valor_filtrado = soma / NUM_LEITURAS;
 
-	          soma += valor_adc;
+      mensagem[0] = 0x40;   // é igual ao @
+      mensagem[1] = 0x01;   // ID do dispositivo
+      mensagem[2] = 0x7C;   // é o separador
+      mensagem[3] = (valor_filtrado >> 8);     // valor alta do byte
+      mensagem[4] = valor_filtrado & 0xFF;   // valor baixo do byte
+      mensagem[5] = 0x23; //finaliza.
 
-	          valor_filtrado = soma / NUM_LEITURAS;
 
-	          	  mensagem[0] = 0x40;   // é igual ao @
-	              mensagem[1] = 0x01;   // ID do dispositivo
-	              mensagem[2] = 0x7C;   // é o separador
-	              mensagem[3] = valor_filtrado >> 8;     // valor alta do byte
-	              mensagem[4] = valor_filtrado & 0xFF;   // valor baixo do byte
-	              mensagem[5] = 0x23; //finaliza.
+      CDC_Transmit_FS(mensagem, 6);
 
-	              CDC_Transmit_FS(mensagem, 6);
-
-	          HAL_Delay(1000);
-	      }
-
+      HAL_Delay(1000);
+  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
+
 
 /**
   * @brief System Clock Configuration
